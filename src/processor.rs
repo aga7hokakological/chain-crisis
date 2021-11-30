@@ -53,5 +53,12 @@ impl Processor {
         life: LifeOrigin
     )  -> ProgramResult {
         let account_info_iter = &mut accounts.iter();
+
+        let program_account = next_account_info(account_info_iter)?;
+        
+        let mut account_data = program_account.data.borrow_mut();
+        let mut account_life = program_account.life.borrow_mut();
+
+        // let mut account_state = MyCharacter::
     }
 }
