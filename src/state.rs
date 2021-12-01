@@ -1,6 +1,6 @@
-// use borsh::{BorshDeserialize, BorshSerialize};
-use solana_program::borsh;
-use solana_program::{clock::UnixTimestamp, pubkey::Pubkey};
+use borsh::{BorshDeserialize, BorshSerialize};
+// use solana_program::borsh;
+// use solana_program::{clock::UnixTimestamp, pubkey::Pubkey};
 
 
 // #[derive(Clone, Debug, PartialEq, BorshDeserialize, BorshSerialize)]
@@ -8,7 +8,45 @@ use solana_program::{clock::UnixTimestamp, pubkey::Pubkey};
 
 // }
 
-#[derive(Clone, Debug, PartialEq)]
+use crate::state::LifeOrigin::CorporateEspionage;
+use crate::state::LifeOrigin::SlumsSurvivor;
+use crate::state::LifeOrigin::Drifter;
+
+
+#[derive(Clone, Debug, PartialEq, BorshDeserialize, BorshSerialize)]
+pub struct CreateMyCharacter {
+    myLife: LifeOrigin,
+    charAttrib: CharacterAttributes,
+}
+
+// #[derive(Clone, Debug, PartialEq, BorshDeserialize, BorshSerialize)]
+impl CreateMyCharacter {
+    pub fn set_values(myLifeNum: LifeOrigin, charAttrib: CharacterAttributes) {
+        let mylife = LifeOrigin::select_my_life_origin(myLifeNum);
+        let charatt = charAttrib;
+    }
+}
+
+
+#[derive(Clone, Debug, PartialEq, BorshDeserialize, BorshSerialize)]
+pub enum LifeOrigin {
+    CorporateEspionage(String),
+    SlumsSurvivor(String),
+    Drifter(String),
+}
+
+impl LifeOrigin {
+    pub fn select_my_life_origin(life: LifeOrigin) {
+        match life {
+            LifeOrigin::CorporateEspionage(_) => "Corporate Espionage",
+            LifeOrigin::SlumsSurvivor(_) => "Slums Survivor",
+            LifeOrigin::Drifter(_) => "Drifter",
+        };
+    }
+}
+
+// #[derive(Clone, Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq, BorshDeserialize, BorshSerialize)]
 pub struct CharacterAttributes {
     damage: u64,
     resistance: u64,

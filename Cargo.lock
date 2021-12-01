@@ -391,6 +391,7 @@ name = "bpf-program-template"
 version = "0.1.0"
 dependencies = [
  "assert_matches",
+ "borsh",
  "num-derive",
  "solana-program",
  "solana-program-test",

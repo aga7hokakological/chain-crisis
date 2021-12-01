@@ -11,7 +11,7 @@ pub enum ErrorCode {
 
 impl From<ErrorCode> for ProgramError {
     fn from(e: ErrorCode) -> Self {
-        ProgramError::Custome(e as u32)
+        ProgramError::Custom(e as u32)
     }
 }
 

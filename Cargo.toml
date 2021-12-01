@@ -9,6 +9,7 @@ publish = false
 solana-program = "=1.8.1"
 thiserror = "*"
 num-derive = "*"
+borsh = "*"
 
 [features]
 test-bpf = []
