@@ -1,19 +1,11 @@
-// use borsh::BorshDeserialize;
-// use solana_program::borsh;
 use solana_program::program_error::ProgramError;
 
-use std::convert::TryInto;
 use borsh::BorshDeserialize;
 
 use crate::error::ErrorCode;
 
 use crate::state::LifeOrigin;
 use crate::state::CharacterAttributes;
-use crate::state::CreateMyCharacter;
-
-use crate::state::LifeOrigin::CorporateEspionage;
-use crate::state::LifeOrigin::SlumsSurvivor;
-use crate::state::LifeOrigin::Drifter;
 
 #[derive(Debug, PartialEq)]
 pub enum CharacterInstruction {

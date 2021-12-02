@@ -1,16 +1,4 @@
 use borsh::{BorshDeserialize, BorshSerialize};
-// use solana_program::borsh;
-// use solana_program::{clock::UnixTimestamp, pubkey::Pubkey};
-
-
-// #[derive(Clone, Debug, PartialEq, BorshDeserialize, BorshSerialize)]
-// pub struct CreateMyCharacter {
-
-// }
-
-use crate::state::LifeOrigin::CorporateEspionage;
-use crate::state::LifeOrigin::SlumsSurvivor;
-use crate::state::LifeOrigin::Drifter;
 
 
 #[derive(Clone, Debug, PartialEq, BorshDeserialize, BorshSerialize)]
@@ -21,8 +9,8 @@ pub struct CreateMyCharacter {
 
 // #[derive(Clone, Debug, PartialEq, BorshDeserialize, BorshSerialize)]
 impl CreateMyCharacter {
-    pub fn set_values(myLifeNum: LifeOrigin, charAttrib: CharacterAttributes) {
-        let mylife = LifeOrigin::select_my_life_origin(myLifeNum);
+    pub fn set_values(myLifeorigin: LifeOrigin, charAttrib: CharacterAttributes) {
+        let mylife = LifeOrigin::select_my_life_origin(myLifeorigin);
         let charatt = charAttrib;
     }
 }

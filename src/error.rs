@@ -1,11 +1,7 @@
-use thiserror::Error;
-use num_derive::FromPrimitive;
 use solana_program::program_error::ProgramError;
 use solana_program::decode_error::DecodeError;
 
-// #[error]
 pub enum ErrorCode {
-    // #[msg("Unable to create character")]
     CharacterCreationError,
 }
 

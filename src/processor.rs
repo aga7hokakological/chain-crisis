@@ -1,27 +1,26 @@
-// use std::str::FromStr;
-
 use crate::{
-    error::ErrorCode,
     instruction::CharacterInstruction,
-    state::{CharacterAttributes, CreateMyCharacter},
+    state::{CharacterAttributes},
 };
 
 
 use crate::state::LifeOrigin;
 
-
-// use borsh::{BorshDeserialize, BorshSerialize};
 use solana_program::{
     account_info::{next_account_info, AccountInfo},
-    // clock::Clock,
     entrypoint::ProgramResult,
-    program_error::ProgramError,
     pubkey::Pubkey,
-    sysvar::{rent::Rent, Sysvar},
-    borsh,
 };
 
 pub struct Processor;
+
+create_my_character(program_id: &Pubkey, accounts: &[AccountInfo], mylifeval: LifeOrigin, attrib: CharacterAttributes) -> ProgramResult {
+    let account_info_iter = &mut accounts.iter();
+
+    CreateMyCharacter::set_values(mylifeval);
+
+    Ok(())
+}
 
 
 impl Processor {
@@ -30,10 +29,14 @@ impl Processor {
         accounts: &[AccountInfo],
         instruction_data: &[u8],
     ) -> ProgramResult {
-        // let instruction = CharacterInstruction::unpack(instruction_data)?;
+        let instruction = CharacterInstruction::unpack(instruction_data)?;
 
+        match instruction {
+            CharacterInstruction::CreateCharacter {lifeOrigin, charAttrib} => {
+                Self::create_my_character(program_id, accounts, life, attrib)
+            }
+        }
 
         Ok(())
     }
-    // Ok(())
 }
