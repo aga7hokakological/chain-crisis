@@ -1,35 +1,49 @@
+use std::str::FromStr;
+
+use solana_program::{
+    program_error::ProgramError,
+    program_pack::{Pack, Sealed},
+    borsh::try_from_slice_unchecked,
+    // pubkey::Pubkey,
+};
+
+use std::convert::TryInto;
 use borsh::{BorshDeserialize, BorshSerialize};
 
 
 #[derive(Clone, Debug, PartialEq, BorshDeserialize, BorshSerialize)]
 pub struct CreateMyCharacter {
-    myLife: LifeOrigin,
-    charAttrib: CharacterAttributes,
+    pub myLife: LifeOrigin,
+    pub charAttrib: CharacterAttributes,
 }
 
 // #[derive(Clone, Debug, PartialEq, BorshDeserialize, BorshSerialize)]
-impl CreateMyCharacter {
-    pub fn set_values(myLifeorigin: LifeOrigin, charAttrib: CharacterAttributes) {
-        let mylife = LifeOrigin::select_my_life_origin(myLifeorigin);
-        let charatt = charAttrib;
-    }
-}
+// impl CreateMyCharacter {
+//     pub fn set_values(myLifeorigin: &str, charAttrib: CharacterAttributes) {
+//         let mylife = LifeOrigin::from_str(myLifeorigin).unwrap();
+//         let charatt = charAttrib;
+//     }
+// }
 
 
 #[derive(Clone, Debug, PartialEq, BorshDeserialize, BorshSerialize)]
 pub enum LifeOrigin {
-    CorporateEspionage(String),
-    SlumsSurvivor(String),
-    Drifter(String),
+    CorporateEspionage,
+    SlumsSurvivor,
+    Drifter,
 }
 
-impl LifeOrigin {
-    pub fn select_my_life_origin(life: LifeOrigin) {
-        match life {
-            LifeOrigin::CorporateEspionage(_) => "Corporate Espionage",
-            LifeOrigin::SlumsSurvivor(_) => "Slums Survivor",
-            LifeOrigin::Drifter(_) => "Drifter",
-        };
+
+impl FromStr for LifeOrigin {
+    type Err = ();
+
+    fn from_str(input: &str) -> Result<LifeOrigin, Self::Err>{
+        match input {
+            "Corporate Espionage" => Ok(LifeOrigin::CorporateEspionage),
+            "Slums Survivor" => Ok(LifeOrigin::SlumsSurvivor),
+            "Drifter" => Ok(LifeOrigin::Drifter),
+            _ => Err(()),
+        }
     }
 }
 
@@ -38,35 +52,61 @@ impl LifeOrigin {
 pub struct CharacterAttributes {
     damage: u64,
     resistance: u64,
-    throw_distance: u64,
-    adrenaline: u64,
-    deathblow_survival: u64,
-    damage_reduction: u64,
-    elemental_damage: u64,
-    ram_efficiency: u64,
-    ram_capacity: u64,
-    system_accuracy: u64,
-    critical_damage: u64,
-    critical_hit_rate: u32,
-    stealth_damage: u32,
 }
 
-impl Default for CharacterAttributes {
-    fn default() -> CharacterAttributes {
-        CharacterAttributes {
-            damage: 100,
-            resistance: 30,
-            throw_distance: 5,
-            adrenaline: 70,
-            deathblow_survival: 10,
-            damage_reduction: 30,
-            elemental_damage: 60,
-            ram_efficiency: 80,
-            ram_capacity: 1000,
-            system_accuracy: 45,
-            critical_damage: 60,
-            critical_hit_rate: 90,
-            stealth_damage: 56,
+impl Sealed for CharacterAttributes {}
+
+impl Pack for CharacterAttributes {
+    const LEN: usize = 128;
+
+    fn pack_into_slice(&self, target: &mut [u8]) {
+        let dmg = self.damage.to_le_bytes();
+        let res = self.resistance.to_le_bytes();
+        for i in 0..64 {
+            target[i] = dmg[i];
+        }
+
+        for i in 65..128 {
+            target[i] = res[i - 64];
         }
     }
+
+    fn unpack_from_slice(src: &[u8]) -> Result<Self, ProgramError> {
+        let damage = u64::from_le_bytes(src[0..64].try_into().unwrap());
+        let resistance = u64::from_le_bytes(src[64..128].try_into().unwrap());
+
+        Ok(Self {
+            damage,
+            resistance,
+        })
+    }
 }
+
+// impl Default for CharacterAttributes {
+//     fn default() -> CharacterAttributes {
+//         CharacterAttributes {
+//             damage: 100,
+//             resistance: 30,
+//         }
+//     }
+// }
+
+
+
+// impl Sealed for LifeOrigin {}
+
+// impl Pack for LifeOrigin {
+//     const LEN: usize = 128;
+
+//     fn pack_into_slice(&self, dst: &mut [u8]) {
+
+//     }
+
+//     fn unpack_from_slice(src: &[u8]) -> Result<Self, ProgramError> {
+
+//         Ok(Self {
+//             LifeOrigin::src,
+//         }
+//         )
+//     }
+// }
