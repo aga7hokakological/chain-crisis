@@ -50,8 +50,8 @@ impl FromStr for LifeOrigin {
 // #[derive(Clone, Debug, PartialEq)]
 #[derive(Clone, Debug, PartialEq, BorshDeserialize, BorshSerialize)]
 pub struct CharacterAttributes {
-    damage: u64,
-    resistance: u64,
+    pub damage: u64,
+    pub resistance: u64,
 }
 
 impl Sealed for CharacterAttributes {}

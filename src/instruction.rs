@@ -43,3 +43,20 @@ impl CharacterInstruction {
         }
     }
 }
+
+// #[cfg(test)]
+// mod tests {
+//     use super::*;
+
+//     #[test]
+//     fn test_unpack_create_character() {
+//         let my_life = LifeOrigin::CorporateEspionage;
+//         let dmg = 19;
+//         let res = 12;
+    
+//         let my_life_attrib = CharacterAttributes { damage: dmg, resistance: res };
+//         let encode_my_life_attrib: &[u8] = bincode::serialize(&my_life_attrib).unwrap();
+
+//         let i = CharacterAttributes::unpack_from_slice(encode_my_life_attrib);
+//     }
+// }
