@@ -6,9 +6,11 @@ declare_id!("Fg6PaFpoGXkYsidMpWTK6W2BeZ7FEfcYkg476zPFsLnS");
 #[program]
 pub mod chain_criss {
     use super::*;
-    pub fn initialize_character(ctx: Context<InitializeCharacter>) -> ProgramResult {
-        let character_life = &mut ctx.accounts.character;
-        character_life.character_attrib = Default::default();
+    pub fn initialize_character(ctx: Context<InitializeCharacter>
+        // , life: LifeOrigin, dmg: u64, res: u64, throw_dist: u64
+    ) -> ProgramResult {
+        // let character_life = &mut ctx.accounts.character;
+        // character_life.character_attrib = Default::default();
         Ok(())
     }
 

@@ -32,9 +32,13 @@ describe('chain-criss', () => {
   it("Create a Character", async() => {
     await program.rpc.createCharacter(
       LifeOrigin.CorporateEspionage,
-      new anchor.BN(45), 
-      new anchor.BN(67), 
-      new anchor.BN(25), {
+      // new anchor.BN(45), 
+      // new anchor.BN(67), 
+      // new anchor.BN(25),
+      charAttrib[0].damage,
+      charAttrib[0].resistance,
+      charAttrib[0].throw_dist, 
+      {
         accounts: {
           character: program.provider.publicKey,
           user: provider.wallet.publicKey,
@@ -51,6 +55,16 @@ describe('chain-criss', () => {
       Drifter: { drifter: {} },
     } 
 
+  function Attrib(damage, resistance, throw_dist) {
+    this.damage = damage;
+    this.resistance = resistance;
+    this.throw_dist = throw_dist;
+  }
+  
+  var charAttrib = [
+    new Attrib(23, 12, 2),
+    new Attrib(12, 18, 2)
+  ]
 
 
      
